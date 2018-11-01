@@ -667,7 +667,7 @@ material Material__335 : textured
 {
     sampler u_diffuseTexture
     {
-        path = SXMLS.fbm/1.png
+        path = bundle/number/1.png
     }
 
     technique
@@ -685,7 +685,7 @@ material Material__336 : textured
 {
     sampler u_diffuseTexture
     {
-        path = SXMLS.fbm/0.png
+        path = bundle/number/0.png
     }
 
     technique
@@ -703,7 +703,7 @@ material Material__337 : textured
 {
     sampler u_diffuseTexture
     {
-        path = SXMLS.fbm/9.png
+        path =bundle/number/9.png
     }
 
     technique
@@ -811,7 +811,7 @@ material lambert2 : textured
 {
     sampler u_diffuseTexture
     {
-        path = SXMLS.fbm/pop_photo1.png
+        path = bundle/details/0.png
     }
 
     technique

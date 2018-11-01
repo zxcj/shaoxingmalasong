@@ -46,10 +46,22 @@ animation Point001
         end = 893
         repeatCount = 1
     }
+    clip Round2_Init
+    {
+        begin = 409
+        end = 409
+        repeatCount = 1
+    }
     clip Round3
     {
         begin = 893
         end = 1100
+        repeatCount = 1
+    }
+    clip Round3_Init
+    {
+        begin = 893
+        end = 893
         repeatCount = 1
     }
     clip Reset
@@ -108,10 +120,22 @@ animation group_Mod
         end = 893
         repeatCount = 1
     }
+    clip Round2_Init
+    {
+        begin = 409
+        end = 409
+        repeatCount = 1
+    }
     clip Round3
     {
         begin = 893
         end = 1100
+        repeatCount = 1
+    }
+    clip Round3_Init
+    {
+        begin = 893
+        end = 893
         repeatCount = 1
     }
     clip Reset
