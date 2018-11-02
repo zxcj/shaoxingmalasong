@@ -2,6 +2,7 @@ AR.log("SXMLS AR v1.0");
 var roundIndex=0;
 var wasCreated=false;
 var m_ServerNodeId=0;
+var pointAmount = 13;
 AR.onload = function() {
     AR.setTimeout(function(){
         antHelper.GetPosition();
@@ -12,7 +13,12 @@ AR.onload = function() {
             AR.log("Index:"+roundIndex);
             SLAMBoostrap(true);
         },500);
-    },1000);
+	},1000);
+	
+	AR.audio_play("bundle/sounds/bgm.mp3");
+	AR.setInterval(function(){
+		AR.audio_play("bundle/sounds/bgm.mp3");
+	},22000);
 };
 
 AR.onbegin = function(clipId) {
@@ -46,7 +52,7 @@ AR.onend = function(clipId) {
     if(clipId == "Point001#Round1"){
         ReSetSLAM(true);
         AR.set_visible("group_Mod",false);
-        antHelper.SavePosition(1);
+		antHelper.SavePosition(1);
         //---------------------------------
         AR.set_visible("Group_UI2",false);
         AR.set_visible("UI2_Explain",false);
@@ -101,7 +107,9 @@ AR.onclick = function(nodeId, x, y) {
         AR.set_visible("Group_UI2",true);
         AR.set_visible("UI2_Close_Scenery",true);
         AR.set_visible("UI2_Scenery",true);
-        AR.set_texture("UI2_Scenery","bundle/details/"+nodeId.split("_")[2]%5+".png");
+		AR.set_texture("UI2_Scenery","bundle/details/"+nodeId.split("_")[2]%pointAmount+".png");
+		
+		AR.audio_play("bundle/sounds/tips.mp3");
     };
 
     if(nodeId=="UI2_Close_Scenery"){
@@ -127,11 +135,17 @@ AR.onclick = function(nodeId, x, y) {
             roundIndex++;
             if(roundIndex==1){
                 AR.play("group_Mod#Round2",1);
-                AR.play("Point001#Round2",1);
+				AR.play("Point001#Round2",1);
+				AR.setTimeout(function(){
+					AR.audio_play("bundle/sounds/PointB.mp3");
+				},13000);
             }
             else if(roundIndex==2){
                 AR.play("group_Mod#Round3",1);
-                AR.play("Point001#Round3",1);
+				AR.play("Point001#Round3",1);
+				AR.setTimeout(function(){
+					AR.audio_play("bundle/sounds/endOnRun.mp3");
+				},1000);
             }
 
         }else{
@@ -152,8 +166,11 @@ AR.onclick = function(nodeId, x, y) {
         AR.set_visible(nodeId,false);        
         var tmp_AnimationIndex = roundIndex-0+1;
         AR.play("group_Mod#Round"+tmp_AnimationIndex,1);
-        AR.play("Point001#Round"+tmp_AnimationIndex,1);
-        AR.lot(tmp_AnimationIndex);
+		AR.play("Point001#Round"+tmp_AnimationIndex,1);
+		
+		AR.setTimeout(function(){
+			AR.audio_play("bundle/sounds/PointA.mp3");
+		},11000);
     };
 
     if(nodeId=="UI3_Photograph"){
