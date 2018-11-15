@@ -543,7 +543,10 @@ material Material__323 : textured
     {
         path = SXMLS.fbm/img_pingmian.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -561,7 +564,10 @@ material Material__324 : textured
     {
         path = SXMLS.fbm/btn_zhaohuan.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -579,7 +585,10 @@ material Material__326 : textured
     {
         path = SXMLS.fbm/btn_begin.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -597,7 +606,10 @@ material Material__327 : textured
     {
         path = SXMLS.fbm/btn_jiangpin.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -615,7 +627,10 @@ material Material__329 : textured
     {
         path = SXMLS.fbm/pop_1.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -633,7 +648,10 @@ material Material__330 : textured
     {
         path = SXMLS.fbm/btn_close.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -651,7 +669,10 @@ material Material__334 : textured
     {
         path = SXMLS.fbm/pop_end page.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -667,7 +688,7 @@ material Material__335 : textured
 {
     sampler u_diffuseTexture
     {
-        path = bundle/number/1.png
+        path = bundle/number/0.png
     }
 
     technique
@@ -703,7 +724,7 @@ material Material__337 : textured
 {
     sampler u_diffuseTexture
     {
-        path =bundle/number/9.png
+        path =bundle/number/0.png
     }
 
     technique
@@ -723,7 +744,10 @@ material Material__338 : textured
     {
         path = SXMLS.fbm/btn_paiming.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -741,7 +765,10 @@ material Material__339 : textured
     {
         path = SXMLS.fbm/btn_share.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -777,7 +804,10 @@ material Material__342 : textured
     {
         path = SXMLS.fbm/btn_again.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -795,7 +825,10 @@ material Material__343 : textured
     {
         path = SXMLS.fbm/btn_end.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -831,7 +864,10 @@ material lambert3 : textured
     {
         path = SXMLS.fbm/btn_close_1.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -849,7 +885,10 @@ material lambert5 : textured
     {
         path = SXMLS.fbm/img_Medal.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -866,7 +905,10 @@ material lambert6 : textured
     {
         path = SXMLS.fbm/btn_close.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 
@@ -883,7 +925,10 @@ material lambert8 : textured
     {
         path = SXMLS.fbm/loading.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 

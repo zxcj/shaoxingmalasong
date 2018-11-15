@@ -3,19 +3,11 @@ var roundIndex=0;
 var wasCreated=false;
 var m_ServerNodeId=0;
 var pointAmount = 13;
+var curScore = 0;
 AR.onload = function() {
-	
+
     AR.setTimeout(function(){
-        antHelper.GetPosition();
-        AR.setTimeout(function(){   
-			AR.set_visible("UI_loading",false);
-            if(m_ServerNodeId==null || m_ServerNodeId=="" || m_ServerNodeId=="undefine")         
-                m_ServerNodeId=0;
-            roundIndex=m_ServerNodeId>2?0:m_ServerNodeId;
-            AR.log("Index:"+roundIndex);
-			SLAMBoostrap(true);	
-			
-        },500);
+        antHelper.GetPosition();       
 	},1000);
 	
 	AR.audio_play("bundle/sounds/bgm.mp3");
@@ -26,7 +18,8 @@ AR.onload = function() {
 
 AR.onbegin = function(clipId) {
 	if(clipId=="Point001#Round3"){
-		AR.audio_play("bundle/sounds/PointB.mp3");		    
+		AR.audio_play("bundle/sounds/PointB.mp3");				
+		antHelper.GetScore();   
     }
 };
 
@@ -59,7 +52,9 @@ AR.onend = function(clipId) {
 		antHelper.SavePosition(1);
 		//Go to h5
 		AR.setTimeout(function(){
-			// AR.open_url();
+			AR.audio_stop();
+			
+			antHelper.getTicket("h1");
 			ReSetSLAM(true);
 			AR.set_visible("group_Mod",false);
 			//---------------------------------
@@ -94,6 +89,8 @@ AR.onend = function(clipId) {
 			//---------------------------------
 			//Go to h5
 			//AR.open_url();
+			antHelper.getTicket("h2");
+			AR.audio_stop();
 		},1000);
 	}
 
@@ -104,7 +101,8 @@ AR.onend = function(clipId) {
         AR.set_visible("Group_UI2",false);
         AR.set_visible("UI2_Explain",false);
         AR.set_visible("UI2_Close",false);
-        //---------------------------------
+		//---------------------------------
+
     }
 
 
@@ -167,7 +165,6 @@ AR.onclick = function(nodeId, x, y) {
 					AR.audio_play("bundle/sounds/endOnRun.mp3");
 				},1000);
             }
-
         }else{
             AR.set_visible("UI1_Star",true);             
             if(roundIndex==1){
@@ -179,14 +176,27 @@ AR.onclick = function(nodeId, x, y) {
                 AR.play("Point001#Round3_Init",1);
             }
         }
-        wasCreated=true;
+		wasCreated=true;
+		AR.resume();		
     };
 
     if(nodeId=="UI1_Star"){
         AR.set_visible(nodeId,false);        
-        var tmp_AnimationIndex = roundIndex-0+1;
-        AR.play("group_Mod#Round"+tmp_AnimationIndex+"_AudioPlay",1);
-		AR.play("Point001#Round"+tmp_AnimationIndex+"_AudioPlay",1);
+		var tmp_AnimationIndex = roundIndex-0+1;
+		var tmp_AnimationGroupName="";
+		var tmp_AnimationPointName="";
+		if(tmp_AnimationIndex<3){
+			tmp_AnimationGroupName="group_Mod#Round"+tmp_AnimationIndex+"_AudioPlay";
+			tmp_AnimationPointName="Point001#Round"+tmp_AnimationIndex+"_AudioPlay";
+		}
+		else{
+			tmp_AnimationGroupName="group_Mod#Round"+tmp_AnimationIndex;
+			tmp_AnimationPointName="Point001#Round"+tmp_AnimationIndex;
+		}
+
+		AR.play(tmp_AnimationGroupName,1);
+		AR.play(tmp_AnimationPointName,1);
+		m_ServerNodeId=0;
     };
 
     if(nodeId=="UI3_Photograph"){
@@ -887,7 +897,7 @@ setSlamPos = function(x, y) {
         SavePosition: function(G) {
 			var I = "com.gxar.mls.add.schedule";
 			var H = {};
-			H.source = "Alipay";
+			H.source = "alipay";
             H.pid = this.userId;
             H.node=G;
 			this.requestInfo(H, I, saveNode, F)
@@ -895,9 +905,17 @@ setSlamPos = function(x, y) {
         GetPosition: function() {
 			var I = "com.gxar.mls.get.schedule";
 			var H = {};
-			H.source = "Alipay";
+			H.source = "alipay";
             H.pid = this.userId;
 			this.requestInfo(H, I, getNode, F)
+		},
+		GetScore: function() {
+			var I = "com.gxar.mls.get.rank";
+			var H = {};
+			H.source = "alipay";
+			H.pid = this.userId;
+			H.programid ="734698419";
+			this.requestInfo(H, I, getScore, F)
 		}
 	};
 	var t = function(G) {
@@ -915,18 +933,38 @@ setSlamPos = function(x, y) {
        AR.log("Get node: "+G.data);
 		var I = JSON.parse(G.data);
 
-       m_ServerNodeId =I.data.node;       
-    };
+	   m_ServerNodeId =I.data.node;	   
+		AR.setTimeout(function(){   
+			AR.set_visible("UI_loading",false);
+			if(m_ServerNodeId==null || m_ServerNodeId=="" || m_ServerNodeId=="undefine")         
+				m_ServerNodeId=0;
+			roundIndex=m_ServerNodeId>2?0:m_ServerNodeId;
+			AR.log("Index:"+roundIndex);
+			SLAMBoostrap(true);				
+		},500);   
+	};
     var saveNode =function(G){
        AR.log("Save node: "+G.data);
-    }
+	};
+	var getScore = function(G){
+		//AR.toast(G.data);
+		if(G.data.data.code==100){
+			curScore=0;
+		}
+		else{
+			curScore=G.data.data.total_score;
+		}
+		AR.set_texture("UI3_number01","bundle/number/"+Math.floor(curScore/100)%10+".png");
+		AR.set_texture("UI3_number02","bundle/number/"+Math.floor(curScore/10)%10+".png");
+		AR.set_texture("UI3_number03","bundle/number/"+Math.floor(curScore)%10+".png");
+	}
 	var F = function(G) {
-		AR.log("faile" + G.statusCode)
+		AR.log("faile" + G.data);
 	};
 	w.AntHelper = d
 })(this);
 
 var antHelper = new AntHelper({
 	// 项目ID，必填
-	projectId: "578869460"
+	projectId: "734698419"
 });
