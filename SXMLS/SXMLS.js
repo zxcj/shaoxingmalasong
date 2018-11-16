@@ -4,14 +4,17 @@ var wasCreated=false;
 var m_ServerNodeId=0;
 var pointAmount = 13;
 var curScore = 0;
+var backgroundTimer;
+var pid;
 AR.onload = function() {
-
     AR.setTimeout(function(){
-        antHelper.GetPosition();       
+       antHelper.GetPosition();   
+	// antHelper.GetScore();   
+
 	},1000);
 	
 	AR.audio_play("bundle/sounds/bgm.mp3");
-	AR.setInterval(function(){
+	backgroundTimer=AR.setInterval(function(){
 		AR.audio_play("bundle/sounds/bgm.mp3");
 	},22000);
 };
@@ -53,7 +56,7 @@ AR.onend = function(clipId) {
 		//Go to h5
 		AR.setTimeout(function(){
 			AR.audio_stop();
-			
+			AR.clearInterval(backgroundTimer);
 			antHelper.getTicket("h1");
 			ReSetSLAM(true);
 			AR.set_visible("group_Mod",false);
@@ -91,6 +94,7 @@ AR.onend = function(clipId) {
 			//AR.open_url();
 			antHelper.getTicket("h2");
 			AR.audio_stop();
+			AR.clearInterval(backgroundTimer);
 		},1000);
 	}
 
@@ -153,6 +157,10 @@ AR.onclick = function(nodeId, x, y) {
 
         if(wasCreated  && (m_ServerNodeId==0 || m_ServerNodeId>2)){
             //back to continue
+        	AR.audio_play("bundle/sounds/bgm.mp3");
+			backgroundTimer=AR.setInterval(function(){
+				AR.audio_play("bundle/sounds/bgm.mp3");
+			},22000);
             roundIndex++;
             if(roundIndex==1){
                 AR.play("group_Mod#Round2_AudioPlay",1);
@@ -209,7 +217,7 @@ AR.onclick = function(nodeId, x, y) {
     };
 
     if(nodeId=="UI3_ranking"){
-        AR.open_url("");
+        AR.open_url("https://www.gxar.com/apps/mlsRanking/734698419/"+pid);
     };
 
     if(nodeId=="UI1_gift"){
@@ -871,11 +879,13 @@ setSlamPos = function(x, y) {
 			var H = new n();
 			var G = {};
 			G.project_id = this.project_id;
+
 			G.pid = this.userId;
 			G.nickname = H.encode(this.nickName);
 			G.avatar = this.avatar;
 			Curgender = this.gender;
 			G.gender = this.gender;
+			pid=this.userId;
 			G.alipay_version = AR.getEnvProp("alipayVersion");
 			G.system_volume = AR.getEnvProp("systemVolume");
 			G.resource_version = AR.getEnvProp("alipayBundleVersion");
@@ -916,13 +926,14 @@ setSlamPos = function(x, y) {
 			H.pid = this.userId;
 			H.programid ="734698419";
 			this.requestInfo(H, I, getScore, F)
+			//AR.toast("请求分数--开始");
 		}
 	};
 	var t = function(G) {
-		AR.log(G.data)
+		//AR.toast(G.data)
 	};
 	var g = function(G) {
-		AR.log("faile" + G.statusCode)
+		//AR.toast("faile" + G.statusCode)
 	};
 	var q = function(G) {
 		var I = JSON.parse(G.data);
@@ -947,19 +958,19 @@ setSlamPos = function(x, y) {
        AR.log("Save node: "+G.data);
 	};
 	var getScore = function(G){
-		//AR.toast(G.data);
-		if(G.data.data.code==100){
+		//AR.toast("请求分数--得到反馈 "+JSON.parse(G.data).code);
+		if(JSON.parse(G.data).code!=0){
 			curScore=0;
 		}
 		else{
-			curScore=G.data.data.total_score;
+			curScore=JSON.parse(G.data).data;
 		}
 		AR.set_texture("UI3_number01","bundle/number/"+Math.floor(curScore/100)%10+".png");
 		AR.set_texture("UI3_number02","bundle/number/"+Math.floor(curScore/10)%10+".png");
 		AR.set_texture("UI3_number03","bundle/number/"+Math.floor(curScore)%10+".png");
 	}
 	var F = function(G) {
-		AR.log("faile" + G.data);
+		AR.toast("faile" + G.data);
 	};
 	w.AntHelper = d
 })(this);
