@@ -16,7 +16,7 @@ scene
     {
     }
     node UI_loading
-    {
+    {        
         oneBoundMin=0,0,0
         oneBoundMax=0.1,0.1,0.1
         fixed=true

@@ -846,7 +846,10 @@ material lambert2 : textured
     {
         path = bundle/details/0.png
     }
-
+    renderState
+    {
+        depthFunc=ALWAYS
+    }
     technique
     {
         pass 

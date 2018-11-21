@@ -6,12 +6,14 @@ var pointAmount = 13;
 var curScore = 0;
 var backgroundTimer;
 var pid;
+var scaled=false;
 AR.onload = function() {
     AR.setTimeout(function(){
        antHelper.GetPosition();   
 	// antHelper.GetScore();   
 
 	},1000);
+			
 	
 	AR.audio_play("bundle/sounds/bgm.mp3");
 	backgroundTimer=AR.setInterval(function(){
@@ -55,16 +57,19 @@ AR.onend = function(clipId) {
 		antHelper.SavePosition(1);
 		//Go to h5
 		AR.setTimeout(function(){
-			AR.audio_stop();
-			AR.clearInterval(backgroundTimer);
 			antHelper.getTicket("h1");
-			ReSetSLAM(true);
-			AR.set_visible("group_Mod",false);
-			//---------------------------------
-			AR.set_visible("Group_UI2",false);
-			AR.set_visible("UI2_Explain",false);
-			AR.set_visible("UI2_Close",false);
-			//---------------------------------
+			AR.setTimeout(function(){
+				AR.audio_stop();
+				AR.clearInterval(backgroundTimer);
+
+				ReSetSLAM(true);
+				AR.set_visible("group_Mod",false);
+				//---------------------------------
+				AR.set_visible("Group_UI2",false);
+				AR.set_visible("UI2_Explain",false);
+				AR.set_visible("UI2_Close",false);
+				//---------------------------------
+			},500);
 		},1000);
 	}
     if(clipId == "Point001#Round1_AudioPlay"){
@@ -83,18 +88,20 @@ AR.onend = function(clipId) {
 	if(clipId == "Point001#Round2"){
         antHelper.SavePosition(2);
 		AR.setTimeout(function(){
-			ReSetSLAM(true);
-			AR.set_visible("group_Mod",false);
-			//---------------------------------
-			AR.set_visible("Group_UI2",false);
-			AR.set_visible("UI2_Explain",false);
-			AR.set_visible("UI2_Close",false);
-			//---------------------------------
-			//Go to h5
-			//AR.open_url();
 			antHelper.getTicket("h2");
-			AR.audio_stop();
-			AR.clearInterval(backgroundTimer);
+			AR.setTimeout(function(){
+				ReSetSLAM(true);
+				AR.set_visible("group_Mod",false);
+				//---------------------------------
+				AR.set_visible("Group_UI2",false);
+				AR.set_visible("UI2_Explain",false);
+				AR.set_visible("UI2_Close",false);
+				//---------------------------------
+				//Go to h5
+				//AR.open_url();
+				AR.audio_stop();
+				AR.clearInterval(backgroundTimer);
+			},500)
 		},1000);
 	}
 
@@ -291,7 +298,14 @@ setSlamPos = function(x, y) {
 	if (AR.resetSlamModel && AR.getEnvProp("slamSupport") == "true") {
 		AR.resetSlamModel(x, y);
 	} else {
-		AR.translate("group_Mod", 0, -30, 0);
+
+		if(!scaled){
+			AR.translate("group_Mod", 0, -200, 0);		
+			AR.rotate("group_Mod", 1.54/2, 0,0);
+			scaled=true;
+			AR.scale("group_Mod",0.5,0.5,0.5);	
+			AR.set_fixed("group_Mod",true);
+		}
     }
     AR.set_visible("group_Mod",true);
 };
